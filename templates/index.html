@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+       <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>Gerenciador de Tarefas</h3>
+            <div>
+                <span class="me-3">Bem-vindo, {{ username }} {% if is_admin %}(Admin){% endif %}</span>
+                <button id="themeToggle" class="btn btn-outline-secondary me-2">
+                    <span id="themeIcon">🌙</span> Tema
+                </button>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">Sair</a>
+            </div>
+        </div>
+
+        {% if is_admin %}
+        <!-- Formulário para adicionar tarefa (somente admin) -->
+        <form id="taskForm" class="mb-4">
+            <div class="input-group">
+                <input type="text" id="taskInput" class="form-control" placeholder="Digite uma tarefa" required>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </div>
+        </form>
+        {% endif %}
+
+        <!-- Filtros -->
+        <div class="mb-3">
+            <label for="priorityFilter" class="form-label">Filtrar por Prioridade:</label>
+            <select id="priorityFilter" class="form-select w-auto d-inline-block">
+                <option value="">Todas</option>
+                <option value="High">Alta</option>
+                <option value="Medium">Média</option>
+                <option value="Low">Baixa</option>
+            </select>
+            <label for="statusFilter" class="form-label ms-3">Filtrar por Status:</label>
+            <select id="statusFilter" class="form-select w-auto d-inline-block">
+                <option value="">Todos</option>
+                <option value="true">Concluídos</option>
+                <option value="false">Pendentes</option>
+            </select>
+        </div>
+
+        <!-- Lista de tarefas -->
+        <ul id="taskList" class="list-group"></ul>
+    </div>
+
+    {% if is_admin %}
+    <!-- Modal para edição (somente admin) -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Tarefa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="editTaskInput" class="form-control" placeholder="Novo texto da tarefa">
+                    <input type="hidden" id="editTaskId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveEdit">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const isAdmin = {{ is_admin|tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

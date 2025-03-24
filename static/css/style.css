@@ -1,0 +1,44 @@
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+body.light {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+body.dark {
+    background-color: #212529;
+    color: #f8f9fa;
+}
+body.dark .list-group-item {
+    background-color: #343a40;
+    color: #f8f9fa;
+    border-color: #495057;
+}
+body.dark .modal-content {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+body.dark .form-control,
+body.dark .form-select {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #6c757d;
+}
+body.dark .btn-outline-secondary,
+body.dark .btn-outline-danger {
+    color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+body.dark .done {
+    text-decoration: line-through;
+    color: #adb5bd;
+}
+.done {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
