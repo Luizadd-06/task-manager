@@ -1,28 +1,37 @@
+#importação das bibliotecas
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import json
-from datetime import datetime  # Importamos datetime para gerar a data/hora
+from datetime import datetime  
 
+#configuração do flask
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
+#gerenciamento do login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+#classe de usuário
 class User(UserMixin):
     def __init__(self, id, username, role):
         self.id = id
         self.username = username
         self.role = role
 
+#carregar usuários e tarefas
 def load_users():
     try:
         with open('users.json', 'r') as f:
             return json.load(f)
     except FileNotFoundError:
-        return {"users": [{"id": 1, "username": "admin", "password": "admin123", "role": "admin"}]}
-
+        return {
+            "users": [
+                {"id": 1, "username": "luiza", "password": "luiza123", "role": "admin"},
+                {"id": 2, "username": "joao", "password": "joao123", "role": "user"}
+            ]
+        }
 def load_tasks():
     try:
         with open('tasks.json', 'r') as f:
@@ -30,10 +39,12 @@ def load_tasks():
     except FileNotFoundError:
         return []
 
+#salvar as tarefas
 def save_tasks(tasks):
     with open('tasks.json', 'w') as f:
         json.dump(tasks, f, indent=2)
 
+#sugestão de prioridade
 def suggest_priority(task_text):
     task_text = task_text.lower()
     high_priority = ['urgente','urgência' 'importante', 'hoje', 'amanhã']
@@ -44,6 +55,7 @@ def suggest_priority(task_text):
         return 'Medium'
     return 'Low'
 
+#login do usuário
 @login_manager.user_loader
 def load_user(user_id):
     users = load_users()['users']
@@ -72,11 +84,13 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+#página inicial
 @app.route('/')
 @login_required
 def index():
     return render_template('index.html', username=current_user.username, is_admin=current_user.role == 'admin')
 
+#obter tarefas
 @app.route('/tasks', methods=['GET'])
 @login_required
 def get_tasks():
@@ -92,6 +106,7 @@ def get_tasks():
         tasks = [task for task in tasks if task['user_id'] == current_user.id or task['user_id'] == 1]
     return jsonify(tasks)
 
+#adicionar tarefas
 @app.route('/tasks', methods=['POST'])
 @login_required
 def add_task():
@@ -107,7 +122,7 @@ def add_task():
         'priority': priority,
         'done': False,
         'user_id': current_user.id,
-        'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Adiciona data e hora
+        'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')  
     }
     tasks.append(new_task)
     save_tasks(tasks)
