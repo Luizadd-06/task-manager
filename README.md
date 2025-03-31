@@ -56,11 +56,19 @@ Um gerenciador de tarefas simples desenvolvido com **Flask** e **Flask-Login**, 
 ```
 task-manager/
 ├── static/         # Arquivos estáticos (CSS, JS, etc.)
-├── templates/      # Templates HTML
-├── tasks.json      # Banco de dados de tarefas
-├── users.json      # Banco de dados de usuários
-├── app.py          # Código principal do Flask
-└── README.md       # Este arquivo
+     ├── css/
+     └── styles.css
+     ├── js/
+     └── script.js    
+├──templates
+     └── index.html
+     └── login.html   
+├── .gitattributes
+├── README.md         
+├── app.py
+├── requirements.txt
+├── tasks.json
+├── users.json    
 ```
 
 ---
