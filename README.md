@@ -55,11 +55,11 @@ Um gerenciador de tarefas simples desenvolvido com **Flask** e **Flask-Login**, 
 ## Estrutura do Projeto
 ```
 task-manager/
-├── static/         # Arquivos estáticos (CSS, JS, etc.)
+├── static/         
      ├── css/
-     └── styles.css
+       └── styles.css
      ├── js/
-     └── script.js    
+       └── script.js    
 ├──templates
      └── index.html
      └── login.html   
